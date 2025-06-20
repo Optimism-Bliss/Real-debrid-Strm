@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  realdebrid-media:
+    image: ghcr.io/optimism-bliss/real-debrid-strm:latest
+    container_name: realdebrid-media-manager
+    restart: unless-stopped
+    
+    environment:
+      # Required: Your Real Debrid API Key
+      - REAL_DEBRID_API_KEY=${REAL_DEBRID_API_KEY}
+      
+      # Optional: Cycle Configuration (defaults shown)
+      - CYCLE_INTERVAL_MINUTES=20      # How often to run cycles
+      - FILE_EXPIRY_DAYS=14           # When to refresh STRM files
+      - RETRY_503_ATTEMPTS=2          # Server error retries per cycle
+      - RETRY_429_ATTEMPTS=3          # Rate limit retries
+      - LOG_LEVEL=INFO                # DEBUG, INFO, WARNING, ERROR
+    
+    volumes:
+      # Media output directory (organized for Jellyfin)
+      - ./media:/app/media
+      
+      # Application logs
+      - ./logs:/app/logs
+      
+      # Tracking data and STRM files
+      - ./output:/app/output
+      
+      # Optional: Custom config
+      # - ./config/settings.yaml:/app/config/settings.yaml:ro
+    
+    # Run as root for proper file ownership
+    user: "0:0"
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "python", "-c", "import os; exit(0 if os.path.exists('/app/logs') else 1)"]
+      interval: 2m
+      timeout: 30s
+      retries: 3
+      start_period: 60s
+    
+    # Resource limits (optional)
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 128M
+
+# Optional: Networks
+networks:
+  default:
+    name: realdebrid-media-net 
