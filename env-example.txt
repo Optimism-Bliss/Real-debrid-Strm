@@ -1,0 +1,28 @@
+# Real Debrid API Configuration
+REAL_DEBRID_API_KEY=your_real_debrid_api_key_here
+
+# Cycle Management Configuration
+CYCLE_INTERVAL_MINUTES=20          # How often to run cycles (default: 20 minutes)
+FILE_EXPIRY_DAYS=14                # When to refresh STRM files (default: 14 days)
+
+# Processing Configuration
+LOG_LEVEL=INFO                     # Logging level: DEBUG, INFO, WARNING, ERROR
+TZ=UTC                            # Timezone for logging
+
+# Retry Configuration  
+RETRY_503_ATTEMPTS=2              # Retries for server unavailable errors
+RETRY_429_ATTEMPTS=3              # Retries for rate limit errors
+
+# Advanced Configuration (Optional)
+# PYTHONUNBUFFERED=1              # Python output buffering (default: enabled)
+# RATE_LIMIT_PER_MINUTE=200       # API rate limit (default: 200, max: 240)
+# CONCURRENCY_LIMIT=3             # Concurrent requests (default: 3)
+
+# Application settings (optional)
+SYNC_INTERVAL=3600
+RATE_LIMIT_PER_MINUTE=240
+CONCURRENCY_LIMIT=5
+
+# TrueNAS compatibility (optional)
+PUID=950
+PGID=950 

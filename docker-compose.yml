@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  realdebrid-media:
+    build: .
+    container_name: realdebrid-media
+    restart: unless-stopped
+    
+    environment:
+      # Real Debrid API Configuration
+      - REAL_DEBRID_API_KEY=${REAL_DEBRID_API_KEY}
+      
+      # Cycle Management Configuration
+      - CYCLE_INTERVAL_MINUTES=${CYCLE_INTERVAL_MINUTES:-20}  # Default: 20 minutes
+      - FILE_EXPIRY_DAYS=${FILE_EXPIRY_DAYS:-14}              # Default: 14 days
+      
+      # Processing Configuration  
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - PYTHONUNBUFFERED=1
+      - TZ=${TZ:-UTC}
+      
+      # Retry Configuration
+      - RETRY_503_ATTEMPTS=${RETRY_503_ATTEMPTS:-2}           # 503 errors retry count
+      - RETRY_429_ATTEMPTS=${RETRY_429_ATTEMPTS:-3}           # 429 errors retry count
+    
+    volumes:
+      # Main output directory - organized under /unorganized/
+      - ./media:/app/media
+      
+      # Application logs
+      - ./logs:/app/logs
+      
+      # API data and cycle tracking
+      - ./output:/app/output
+      
+      # Configuration files
+      - ./config:/app/config
+    
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys; sys.exit(0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s  # Allow more time for first cycle
+    
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"  # Increased for cycle logging
+        max-file: "5"    # Keep more log files for cycle analysis
+    
+    # Resource limits for long-running cycles
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.1'
+
+# Optional: Network for multiple services
+# networks:
+#   realdebrid:
+#     driver: bridge 

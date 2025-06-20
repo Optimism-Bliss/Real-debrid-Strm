@@ -1,0 +1,65 @@
+# Real Debrid Media Manager Configuration
+
+# Media file categories and extensions
+categories:
+  movies:
+    - mp4
+    - mkv
+    - avi
+    - mov
+    - wmv
+    - m4v
+    - flv
+    - webm
+  tv:
+    - mp4
+    - mkv
+    - avi
+    - mov
+    - wmv
+    - m4v
+    - flv
+    - webm
+  other:
+    - iso
+    - img
+
+# TV Show detection patterns
+tv_patterns:
+  season_episode:
+    - "s\\d+e\\d+"           # S01E01
+    - "season\\s*\\d+"       # Season 1
+    - "\\d+x\\d+"            # 1x01
+  
+# File naming preferences
+naming:
+  tv_shows:
+    season_format: "Season {season}"
+    episode_format: "S{season:02d}E{episode:02d}"
+    include_episode_title: true
+  
+  movies:
+    include_year: true
+    year_format: "({year})"
+
+# Sync preferences
+sync:
+  # Skip files smaller than this size (in MB)
+  min_file_size: 100
+  
+  # Skip files with these keywords in filename
+  skip_keywords:
+    - "sample"
+    - "trailer"
+    - "preview"
+  
+  # Maximum number of files to process per sync
+  max_files_per_sync: 500
+
+# STRM file preferences
+strm:
+  # Include direct download URL as comment in STRM file
+  include_metadata: false
+  
+  # Create .nfo files alongside STRM files (future feature)
+  create_nfo: false 

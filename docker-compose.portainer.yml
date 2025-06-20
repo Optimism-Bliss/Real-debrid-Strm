@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  realdebrid-media:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: realdebrid-media:v2.0
+    container_name: realdebrid-media
+    restart: unless-stopped
+    
+    environment:
+      # Real Debrid API Configuration (SET IN PORTAINER)
+      - REAL_DEBRID_API_KEY=${REAL_DEBRID_API_KEY}
+      
+      # Cycle Management Configuration
+      - CYCLE_INTERVAL_MINUTES=${CYCLE_INTERVAL_MINUTES:-20}
+      - FILE_EXPIRY_DAYS=${FILE_EXPIRY_DAYS:-14}
+      
+      # Processing Configuration  
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - PYTHONUNBUFFERED=1
+      - TZ=${TZ:-UTC}
+      
+      # Retry Configuration
+      - RETRY_503_ATTEMPTS=${RETRY_503_ATTEMPTS:-2}
+      - RETRY_429_ATTEMPTS=${RETRY_429_ATTEMPTS:-3}
+    
+    volumes:
+      # Media output - CHANGE THESE PATHS IN PORTAINER
+      - /host/path/to/media:/app/media
+      
+      # Application logs
+      - /host/path/to/logs:/app/logs
+      
+      # API data and cycle tracking
+      - /host/path/to/output:/app/output
+      
+      # Configuration files
+      - /host/path/to/config:/app/config
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.1'
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys, os; sys.exit(0 if os.path.exists('/app/logs') else 1)"]
+      interval: 2m
+      timeout: 30s
+      retries: 3
+      start_period: 60s
+    
+    # Logging
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"
+
+networks:
+  default:
+    name: realdebrid-network 

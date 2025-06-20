@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  realdebrid-media:
+    build: 
+      context: https://github.com/Optimism-Bliss/Real-debrid-Strm.git
+      dockerfile: Dockerfile
+    container_name: realdebrid-media
+    restart: unless-stopped
+    
+    environment:
+      # ⚠️ SET YOUR API KEY IN PORTAINER ENVIRONMENT VARIABLES
+      - REAL_DEBRID_API_KEY=${REAL_DEBRID_API_KEY}
+      
+      # Cycle Configuration (modify as needed)
+      - CYCLE_INTERVAL_MINUTES=20
+      - FILE_EXPIRY_DAYS=14
+      - LOG_LEVEL=INFO
+      - TZ=UTC
+      - RETRY_503_ATTEMPTS=2
+      - RETRY_429_ATTEMPTS=3
+      - PYTHONUNBUFFERED=1
+    
+    volumes:
+      # 🚨 IMPORTANT: Update these paths for your system
+      - /mnt/realdebrid/media:/app/media
+      - /mnt/realdebrid/logs:/app/logs
+      - /mnt/realdebrid/output:/app/output
+      - /mnt/realdebrid/config:/app/config
+    
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.1'
+    
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys, os; sys.exit(0 if os.path.exists('/app/logs') else 1)"]
+      interval: 2m
+      timeout: 30s
+      retries: 3
+      start_period: 60s
+    
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"
+
+networks:
+  default:
+    name: realdebrid-network 

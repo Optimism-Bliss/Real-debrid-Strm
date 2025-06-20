@@ -1,0 +1,92 @@
+# Version Control
+.git
+.gitignore
+.gitattributes
+
+# Environment & Config
+.env
+.env.*
+*.local
+
+# Logs & Output
+logs/
+*.log
+output/
+media/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment  
+venv/
+env/
+ENV/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Documentation (build only app code)
+README.md
+DOCUMENTATION.md
+TrueNAS-DEPLOY.md
+*.md
+
+# Test Files
+test_*.py
+*_test.py
+tests/
+
+# Docker
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# Backup Files
+*.bak
+*.backup
+*.old
+*.orig
+
+# Temporary Files
+*.tmp
+*.temp
+.cache/
+
+# Large Data Files
+*.json
+*.txt
+realdebrid_* 
