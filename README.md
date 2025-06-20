@@ -34,7 +34,7 @@
 - **Video files ≥300MB** (filters out ads/trailers)
 - **All subtitle formats** (.srt, .ass, .vtt, etc.)
 - **Extension cleanup** from folder names
-- **Root ownership** (root:root) for containers
+- **Standard permissions** for easy access
 
 ## �� Quick Start
 
@@ -175,7 +175,7 @@ graph TD
     E --> F[Unrestrict Links]
     F --> G[Filter & Skip Existing]
     G --> H[Create STRM Files]
-    H --> I[Set Root Ownership]
+    H --> I[Create STRM Files]
     I --> J[Wait 20 Minutes]
     J --> A
 ```

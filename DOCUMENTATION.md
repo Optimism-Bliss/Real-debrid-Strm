@@ -25,7 +25,7 @@ Real Debrid Media Manager is a production-ready Docker container that automatica
 - **Intelligent File Filtering** - Automatically removes ads, trailers, and junk files
 - **Improved Rate Limiting** - Respects API limits with exponential backoff
 - **Unified Organization** - All content goes to `/media/unorganized/` for AI classification
-- **Root Ownership** - Proper file permissions for container environments
+- **Standard Permissions** - Files created with regular user permissions
 
 ## 📋 Features
 

@@ -30,8 +30,7 @@ services:
       # Optional: Custom config
       # - ./config/settings.yaml:/app/config/settings.yaml:ro
     
-    # Run as root for proper file ownership
-    user: "0:0"
+    # Run with standard user permissions
     
     # Health check
     healthcheck:

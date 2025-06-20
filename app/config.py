@@ -30,11 +30,9 @@ class Config:
         if not self.rd_api_key:
             raise ValueError("REAL_DEBRID_API_KEY environment variable is required")
         
-        # Create media directories
+        # Create unorganized media directory only
         self.media_path.mkdir(parents=True, exist_ok=True)
-        (self.media_path / 'movies').mkdir(exist_ok=True)
-        (self.media_path / 'tv').mkdir(exist_ok=True)
-        (self.media_path / 'other').mkdir(exist_ok=True)
+        (self.media_path / 'unorganized').mkdir(exist_ok=True)
     
     def load_settings(self, config_file='config/settings.yaml'):
         """Load additional settings from YAML file"""

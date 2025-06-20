@@ -13,6 +13,9 @@ from pathlib import Path
 from .config import load_config
 from .cycle_manager import CycleManager
 
+# Ensure log directory exists before setting up logging
+Path('/app/logs').mkdir(parents=True, exist_ok=True)
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,

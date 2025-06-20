@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean
 
 # Copy Python packages from builder
-COPY --from=builder /root/.local /root/.local
+COPY --from=builder /root/.local /usr/local
 
 # Create app user for security (but we'll run as root for chown operations)
 RUN useradd --create-home --shell /bin/bash app
@@ -41,7 +41,6 @@ COPY *.py ./
 COPY *.md ./
 
 # Set Python path
-ENV PATH=/root/.local/bin:$PATH
 ENV PYTHONPATH=/app
 ENV PYTHONUNBUFFERED=1
 
@@ -55,8 +54,8 @@ LABEL maintainer="Real Debrid Media Manager" \
       description="Cycle-based Real Debrid media processor with intelligent retry logic" \
       features="20min-cycles,14day-expiry,503-retry,intelligent-skip"
 
-# Default to app user, but can be overridden for root operations
-USER app
+# Run as root for file operations and chown permissions
+# USER app  # Commented out - need root for media file operations
 
 # Expose potential monitoring port (if needed in future)
 EXPOSE 8000

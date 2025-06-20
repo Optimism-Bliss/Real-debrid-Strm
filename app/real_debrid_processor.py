@@ -359,13 +359,6 @@ class RealDebridProcessor:
         unorganized_dir = media_dir / "unorganized"
         unorganized_dir.mkdir(parents=True, exist_ok=True)
         
-        # Set ownership to root:root for unorganized directory
-        try:
-            subprocess.run(['chown', 'root:root', str(unorganized_dir)], check=True)
-            logger.debug(f"✅ Set ownership root:root for {unorganized_dir}")
-        except Exception as e:
-            logger.warning(f"⚠️  Could not set ownership for {unorganized_dir}: {e}")
-        
         created_count = 0
         skipped_count = 0
         
@@ -376,13 +369,6 @@ class RealDebridProcessor:
             
             # Create folder if needed
             folder_path.mkdir(parents=True, exist_ok=True)
-            
-            # Set ownership to root:root for torrent folder
-            try:
-                subprocess.run(['chown', 'root:root', str(folder_path)], check=True)
-                logger.debug(f"✅ Set ownership root:root for {folder_path}")
-            except Exception as e:
-                logger.warning(f"⚠️  Could not set ownership for {folder_path}: {e}")
             
             for file_info in group['files']:
                 strm_filename = f"{file_info['sanitized_name']}.strm"
@@ -402,14 +388,6 @@ class RealDebridProcessor:
                 # Create STRM file
                 try:
                     strm_path.write_text(file_info['download_url'], encoding='utf-8')
-                    
-                    # Set ownership to root:root for STRM file
-                    try:
-                        subprocess.run(['chown', 'root:root', str(strm_path)], check=True)
-                        logger.debug(f"✅ Set ownership root:root for {strm_path}")
-                    except Exception as e:
-                        logger.warning(f"⚠️  Could not set ownership for {strm_path}: {e}")
-                    
                     logger.debug(f"✅ Created {strm_path}")
                     created_count += 1
                 except Exception as e:
@@ -566,23 +544,9 @@ class RealDebridProcessor:
             unorganized_dir = media_dir / "unorganized"
             unorganized_dir.mkdir(parents=True, exist_ok=True)
             
-            # Set ownership to root:root for unorganized directory
-            try:
-                subprocess.run(['chown', 'root:root', str(unorganized_dir)], check=True)
-                logger.debug(f"✅ Set ownership root:root for {unorganized_dir}")
-            except Exception as e:
-                logger.warning(f"⚠️  Could not set ownership for {unorganized_dir}: {e}")
-            
             # Create Misc folder under unorganized
             misc_folder = unorganized_dir / "Misc"
             misc_folder.mkdir(parents=True, exist_ok=True)
-            
-            # Set ownership to root:root for Misc folder
-            try:
-                subprocess.run(['chown', 'root:root', str(misc_folder)], check=True)
-                logger.debug(f"✅ Set ownership root:root for {misc_folder}")
-            except Exception as e:
-                logger.warning(f"⚠️  Could not set ownership for {misc_folder}: {e}")
             
             processed_misc = 0
             for file_info in unmatched_links:
@@ -602,14 +566,6 @@ class RealDebridProcessor:
                     if not strm_path.exists():
                         try:
                             strm_path.write_text(file_info["url"], encoding='utf-8')
-                            
-                            # Set ownership to root:root for STRM file
-                            try:
-                                subprocess.run(['chown', 'root:root', str(strm_path)], check=True)
-                                logger.debug(f"✅ Set ownership root:root for {strm_path}")
-                            except Exception as e:
-                                logger.warning(f"⚠️  Could not set ownership for {strm_path}: {e}")
-                            
                             strm_results["created"] += 1
                             processed_misc += 1
                             logger.debug(f"✅ Created misc STRM: {strm_path}")
@@ -660,13 +616,6 @@ class RealDebridProcessor:
         unorganized_dir = media_dir / "unorganized"
         unorganized_dir.mkdir(parents=True, exist_ok=True)
         
-        # Set ownership to root:root for unorganized directory
-        try:
-            subprocess.run(['chown', 'root:root', str(unorganized_dir)], check=True)
-            logger.debug(f"✅ Set ownership root:root for {unorganized_dir}")
-        except Exception as e:
-            logger.warning(f"⚠️  Could not set ownership for {unorganized_dir}: {e}")
-        
         created_count = 0
         skipped_count = 0
         
@@ -674,13 +623,6 @@ class RealDebridProcessor:
             # Create folder under /unorganized/
             folder_path = unorganized_dir / folder_name
             folder_path.mkdir(parents=True, exist_ok=True)
-            
-            # Set ownership to root:root for torrent folder
-            try:
-                subprocess.run(['chown', 'root:root', str(folder_path)], check=True)
-                logger.debug(f"✅ Set ownership root:root for {folder_path}")
-            except Exception as e:
-                logger.warning(f"⚠️  Could not set ownership for {folder_path}: {e}")
             
             logger.info(f"📦 {folder_name}: {len(group['files'])} files")
             
@@ -702,14 +644,6 @@ class RealDebridProcessor:
                 # Create STRM file
                 try:
                     strm_path.write_text(file_info['url'], encoding='utf-8')
-                    
-                    # Set ownership to root:root for STRM file
-                    try:
-                        subprocess.run(['chown', 'root:root', str(strm_path)], check=True)
-                        logger.debug(f"✅ Set ownership root:root for {strm_path}")
-                    except Exception as e:
-                        logger.warning(f"⚠️  Could not set ownership for {strm_path}: {e}")
-                    
                     logger.debug(f"✅ Created {strm_path}")
                     created_count += 1
                 except Exception as e:
