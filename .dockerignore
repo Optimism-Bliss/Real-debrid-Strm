@@ -86,7 +86,9 @@ docker-compose*.yml
 *.temp
 .cache/
 
-# Large Data Files
+# Large Data Files  
 *.json
-*.txt
-realdebrid_* 
+realdebrid_*
+
+# Allow essential files
+!requirements.txt 

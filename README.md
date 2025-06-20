@@ -1,4 +1,9 @@
-# Real Debrid Media Manager v2.0
+# 🐳 Real Debrid Media Manager
+
+**Intelligent cycle-based media processor with 14-day refresh system**
+
+[![Docker Build](https://github.com/Optimism-Bliss/Real-debrid-Strm/actions/workflows/docker-build.yml/badge.svg)](https://github.com/Optimism-Bliss/Real-debrid-Strm/actions/workflows/docker-build.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 🔄 **Intelligent Cycle-Based Media Processor** for Real Debrid with automated retry logic and file expiration management.
 
@@ -31,31 +36,58 @@
 - **Extension cleanup** from folder names
 - **Root ownership** (root:root) for containers
 
-## 🚀 Quick Start
+## �� Quick Start
 
-### 1. **Setup Environment**
-```bash
-# Clone repository
-git clone <repository>
-cd RealDB-Media
+### 1\. **Setup Environment**
+
+# Clone repository (optional - for custom builds)
+git clone https://github.com/Optimism-Bliss/Real-debrid-Strm.git
+cd Real-debrid-Strm
 
 # Configure API key
 cp env-example.txt .env
 nano .env  # Add your REAL_DEBRID_API_KEY
+
+### 2\. **Deploy Container**
+
+#### **Option A: Pre-built Image (Recommended)**
+
+```yaml
+# docker-compose.yml
+version: '3.8'
+services:
+  realdebrid-media:
+    image: ghcr.io/optimism-bliss/real-debrid-strm:latest
+    container_name: realdebrid-media-manager
+    environment:
+      - REAL_DEBRID_API_KEY=${REAL_DEBRID_API_KEY}
+      - CYCLE_INTERVAL_MINUTES=20
+      - FILE_EXPIRY_DAYS=14
+    volumes:
+      - ./media:/app/media
+      - ./logs:/app/logs
+      - ./output:/app/output
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import os; exit(0 if os.path.exists('/app/logs') else 1)"]
+      interval: 2m
+      timeout: 30s
+      retries: 3
 ```
 
-### 2. **Deploy Container**
-
-#### **Option A: Docker Compose (Local)**
 ```bash
-# Start with default 20-minute cycles
-docker-compose up --build -d
-
-# Monitor real-time logs
-docker-compose logs -f realdebrid-media
+# Quick deploy with pre-built image
+docker-compose up -d
 ```
 
-#### **Option B: Portainer (GUI)**
+#### **Option B: Build from Source**
+
+```bash
+# Build and deploy locally
+docker-compose up --build -d
+```
+
+#### **Option C: Portainer (GUI)**
 1. **Access Portainer** → **"Stacks"** → **"Add stack"**
 2. **Name**: `realdebrid-media-manager`
 3. **Build method**: Repository
@@ -71,6 +103,26 @@ docker-compose logs -f realdebrid-media
 8. **Deploy the stack**
 
 📖 **Detailed Portainer guide**: [PORTAINER_DEPLOY.md](PORTAINER_DEPLOY.md)
+
+### 3\. **Pre-built Images Available**
+
+| Image Tag | Description | Build Status |
+|-----------|-------------|--------------|
+| `latest` | Latest stable build from main branch | [![Docker Build](https://github.com/Optimism-Bliss/Real-debrid-Strm/actions/workflows/docker-build.yml/badge.svg)](https://github.com/Optimism-Bliss/Real-debrid-Strm/actions/workflows/docker-build.yml) |
+| `v2.0.0` | Cycle management system | ✅ Stable |
+
+```bash
+# Pull latest image
+docker pull ghcr.io/optimism-bliss/real-debrid-strm:latest
+
+# Run directly
+docker run -d \
+  --name realdebrid-media \
+  -e REAL_DEBRID_API_KEY=your_key_here \
+  -v ./media:/app/media \
+  -v ./logs:/app/logs \
+  ghcr.io/optimism-bliss/real-debrid-strm:latest
+```
 
 ### 3. **Expected Output**
 ```
